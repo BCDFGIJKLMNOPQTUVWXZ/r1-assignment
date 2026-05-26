@@ -1,0 +1,67 @@
+@baseUrl = http://localhost:5000/api/v1
+@ticketId = {{create_ticket.response.body.data._id}}
+
+### 1. Health Check
+GET http://localhost:5000/api/health
+
+### 2. Create a new Ticket
+# @name create_ticket
+POST {{baseUrl}}/tickets
+Content-Type: application/json
+
+{
+  "subject": "Cannot access my account",
+  "description": "I tried resetting my password but I am not receiving the email.",
+  "customerEmail": "john.doe@example.com",
+  "priority": "high"
+}
+
+### 3. Get all Tickets
+GET {{baseUrl}}/tickets
+
+### 4. Get Tickets by Status (e.g., open)
+GET {{baseUrl}}/tickets?status=open
+
+### 5. Get Tickets by Priority
+GET {{baseUrl}}/tickets?priority=high
+
+### 6. Get Ticket Stats
+GET {{baseUrl}}/tickets/stats
+
+### 7. Get Ticket by ID
+GET {{baseUrl}}/tickets/{{ticketId}}
+
+### 8. Update Ticket Status to In Progress
+PATCH {{baseUrl}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "in_progress"
+}
+
+### 9. Update Ticket Status to Resolved (Testing auto resolvedAt)
+PATCH {{baseUrl}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "resolved"
+}
+
+### 10. Update Ticket Status to Closed
+PATCH {{baseUrl}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "closed"
+}
+
+### 11. Test Validation Error (Invalid Status)
+PATCH {{baseUrl}}/tickets/{{ticketId}}
+Content-Type: application/json
+
+{
+  "status": "invalid_status"
+}
+
+### 12. Delete Ticket
+DELETE {{baseUrl}}/tickets/{{ticketId}}
